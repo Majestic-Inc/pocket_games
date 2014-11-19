@@ -22,11 +22,11 @@
                 </tr>
                 <tr>
                     <td>* Пароль: </td>
-                    <td><input name="password" type="text" /></td>
+                    <td><input name="password" type="password" /></td>
                 </tr>
                 <tr>
                     <td>* Повторите пароль: </td>
-                    <td><input name="repeatPassword" type="text" /></td>
+                    <td><input name="repeatPassword" type="password" /></td>
                 </tr>                                
                 
                 <tr>
