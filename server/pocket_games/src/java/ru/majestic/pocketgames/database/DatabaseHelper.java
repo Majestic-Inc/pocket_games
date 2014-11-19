@@ -41,4 +41,14 @@ public class DatabaseHelper {
         }
     }
     
+    public boolean hasUserWithSameMail(String mail) throws DatabaseAccessException {
+        final Session session = PocketGamesHibernateUtils.getSessionFactory().openSession();
+        session.beginTransaction();
+        try {            
+            return !session.createQuery("FROM UserDAO u WHERE u.mail = :mail").setString("mail", mail).list().isEmpty();
+        } catch (HibernateException e) {
+            throw new DatabaseAccessException(e.toString());
+        }
+    }
+    
 }

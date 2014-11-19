@@ -4,6 +4,8 @@
  */
 package ru.majestic.pocketgames.forms.validators;
 
+import ru.majestic.pocketgames.database.DatabaseHelper;
+import ru.majestic.pocketgames.database.exceptions.DatabaseAccessException;
 import ru.majestic.pocketgames.forms.objects.UserRegistrationFormObject;
 
 /**
@@ -22,6 +24,7 @@ public class RegisterUserFormValidator {
     
     private static final int ERROR_CODE_NAME_LONG                   = 105;
     private static final int ERROR_CODE_LASTNAME_LONG               = 106;
+    private static final int ERROR_CODE_MAIL_ALREADY_EXIST          = 107;
     
     
     private static final int E_MAIL_MIN_LENGTH      = 3;
@@ -33,7 +36,7 @@ public class RegisterUserFormValidator {
     private static final int NAME_MAX_LENGTH        = 64;
     private static final int LASTNAME_MAX_LENGTH    = 64;
     
-    public static ValidationStatus validateUserRegistrationFormObject(UserRegistrationFormObject userRegistrationFormObject) {
+    public static ValidationStatus validateUserRegistrationFormObject(UserRegistrationFormObject userRegistrationFormObject) throws DatabaseAccessException {
         if(userRegistrationFormObject.getMail().length() < E_MAIL_MIN_LENGTH) {
             return new ValidationStatus(ValidationStatus.Status.ERROR, ERROR_CODE_E_MAIL_SHORT, "E-mail слишком короткий. Минимальная длина " + E_MAIL_MIN_LENGTH);
         }
@@ -59,6 +62,10 @@ public class RegisterUserFormValidator {
         }
         if(userRegistrationFormObject.getLastName().length() > LASTNAME_MAX_LENGTH) {
             return new ValidationStatus(ValidationStatus.Status.ERROR, ERROR_CODE_LASTNAME_LONG, "Фамилия слишком длинная. Максимальная длина " + LASTNAME_MAX_LENGTH);
+        }
+        
+        if(DatabaseHelper.getInstance().hasUserWithSameMail(userRegistrationFormObject.getMail())) {
+            return new ValidationStatus(ValidationStatus.Status.ERROR, ERROR_CODE_MAIL_ALREADY_EXIST, "E-mail " + userRegistrationFormObject.getMail() + " уже используется. Попробуйте другой.");
         }
         
         return new ValidationStatus(ValidationStatus.Status.OK);

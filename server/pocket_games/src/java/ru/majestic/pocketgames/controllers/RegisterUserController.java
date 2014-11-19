@@ -34,21 +34,22 @@ public class RegisterUserController {
     public ModelAndView register(@ModelAttribute("user") UserRegistrationFormObject userRegistrationFormObject) {
         ModelAndView modelAndView;
         
-        final ValidationStatus validationStatus = RegisterUserFormValidator.validateUserRegistrationFormObject(userRegistrationFormObject);
-        
-        if(validationStatus.getValidationStatus() == ValidationStatus.Status.OK) {           
-            try {
+        try {
+            final ValidationStatus validationStatus = RegisterUserFormValidator.validateUserRegistrationFormObject(userRegistrationFormObject);
+
+            if(validationStatus.getValidationStatus() == ValidationStatus.Status.OK) {           
                 DatabaseHelper.getInstance().addUser(convertFormDataToUserDAO(userRegistrationFormObject));
-                
-                modelAndView = new ModelAndView("user/registration_success");
-            } catch (DatabaseAccessException e) {
+
+                modelAndView = new ModelAndView("user/registration_success");            
+            } else {
                 modelAndView = new ModelAndView("user/register_user_form");
-                modelAndView.addObject("registration_error", e.toString());
-            }                        
-        } else {
+                modelAndView.addObject("registration_error", validationStatus.getErrorMessage());
+            }
+        } catch (DatabaseAccessException e) {
             modelAndView = new ModelAndView("user/register_user_form");
-            modelAndView.addObject("registration_error", validationStatus.getErrorMessage());
-        }
+            modelAndView.addObject("registration_error", e.toString());
+        }                        
+        
 
         return modelAndView;
     }
