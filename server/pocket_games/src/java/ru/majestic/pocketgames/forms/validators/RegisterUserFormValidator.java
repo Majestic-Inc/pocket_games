@@ -12,12 +12,13 @@ import ru.majestic.pocketgames.forms.objects.UserRegistrationFormObject;
  */
 public class RegisterUserFormValidator {
     
-    private static final int ERROR_CODE_E_MAIL_SHORT    = 100;
-    private static final int ERROR_CODE_E_MAIL_LONG     = 101;
+    private static final int ERROR_CODE_E_MAIL_SHORT                = 100;
+    private static final int ERROR_CODE_E_MAIL_LONG                 = 101;
     
-    private static final int ERROR_CODE_PASSWORD_SHORT      = 102;
-    private static final int ERROR_CODE_PASSWORD_LONG       = 103;
+    private static final int ERROR_CODE_PASSWORD_SHORT              = 102;
+    private static final int ERROR_CODE_PASSWORD_LONG               = 103;
     
+    private static final int ERROR_CODE_PASSWORDS_NOT_EQUALS        = 104;
     
     
     private static final int E_MAIL_MIN_LENGTH  = 3;
@@ -41,6 +42,10 @@ public class RegisterUserFormValidator {
         
         if(userRegistrationFormObject.getPassword().length() > PASSWORD_MAX_LENGTH) {
             return new ValidationStatus(ValidationStatus.Status.ERROR, ERROR_CODE_PASSWORD_LONG, "Пароль слишком длинный. Максимальная длина " + PASSWORD_MAX_LENGTH);
+        }
+        
+        if(!userRegistrationFormObject.getPassword().equals(userRegistrationFormObject.getRepeatPassword())) {
+            return new ValidationStatus(ValidationStatus.Status.ERROR, ERROR_CODE_PASSWORDS_NOT_EQUALS, "Пароли не совпадают.");
         }
         
         return new ValidationStatus(ValidationStatus.Status.OK);
