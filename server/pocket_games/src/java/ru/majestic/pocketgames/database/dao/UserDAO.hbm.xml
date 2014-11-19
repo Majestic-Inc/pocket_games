@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="ru.majestic.pocketgames.database.dao.UserDAO" table="users">
+      <id name="id" column="ID" type="long">
+          <generator class="native" />
+      </id>
+      
+      <property name="mail"                 column="MAIL"               type="string"   length="128"    />
+      <property name="password"             column="PASSWORD"           type="string"   length="64"     />
+      <property name="registrationDate"     column="REGISTRATION_DATE"  type="date"                     />
+      
+      <property name="name"                 column="NAME"               type="string"   length="64"     />
+      <property name="lastName"             column="LASTNAME"           type="string"   length="64"     />
+      
+  </class>
+</hibernate-mapping>
